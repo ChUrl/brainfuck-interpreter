@@ -9,7 +9,8 @@ include_directories(include)
 
 add_executable(bfuck
     src/main.cpp
-        src/lex.cpp
+    src/lex.cpp
+    src/interpret.cpp
 )
 
 # target_link_libraries(lasm Boost::program_options)
