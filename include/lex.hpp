@@ -11,6 +11,6 @@
  */
 bool lex_brainfuck_file(const std::string &path, std::string &tokens);
 
-bool token_string_valid(std::string_view tokens);
+bool program_valid(const std::string_view tokens);
 
 #endif

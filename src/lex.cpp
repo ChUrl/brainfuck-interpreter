@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <stack>
 
 bool lex_brainfuck_file(const std::string &path, std::string &tokens) {
     if (!tokens.empty()) {
@@ -29,19 +30,35 @@ bool lex_brainfuck_file(const std::string &path, std::string &tokens) {
     }
     input_stream.close();
 
-    if (!token_string_valid(tokens)) {
+    if (!program_valid(tokens)) {
         std::cout << "Program is invalid!" << std::endl;
         return false;
     }
 
-    std::cout << "Lexed BrainFuck program:\n" << tokens << std::endl;
+    std::cout << "Lexed valid BrainFuck program:\n" << tokens << std::endl;
     return true;
 }
 
-bool token_string_valid(const std::string_view tokens) {
+bool program_valid(const std::string_view tokens) {
+    // Check tokens
     std::string valid_tokens = "><+-.,[]";
-
-    return std::ranges::all_of(tokens.begin(), tokens.end(), [&valid_tokens](const char c){
+    bool tokens_valid = std::ranges::all_of(tokens.begin(), tokens.end(), [&valid_tokens](const char c){
         return valid_tokens.find(c) != std::string::npos;
     });
+
+    // Check bracket balance
+    std::stack<char> brackets;
+    for (const char c : tokens) {
+        if (c == '[') {
+            brackets.push('[');
+        } else if (c == ']') {
+            if (brackets.top() == '[') {
+                brackets.pop();
+            } else {
+                return false;
+            }
+        }
+    }
+
+    return tokens_valid && brackets.empty();
 }
