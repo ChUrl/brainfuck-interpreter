@@ -72,6 +72,7 @@
           # bear # To generate compilation database
           gdb
           cling # To try out my bullshit implementations
+          clang-tools_18
           # doxygen # Generate docs + graphs
         ];
 
